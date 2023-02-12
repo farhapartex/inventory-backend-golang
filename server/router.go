@@ -25,12 +25,7 @@ func NewRouter() *gin.Engine {
 			auth := v1.Group("auth")
 			{
 				auth.POST("/register", controller.Register)
-
-				// auth.GET("/test", func(ctx *gin.Context) {
-				// 	ctx.JSON(200, gin.H{
-				// 		"message": "I'm test healthy",
-				// 	})
-				// })
+				auth.POST("/login", controller.Login)
 			}
 
 			users := v1.Group("users")
