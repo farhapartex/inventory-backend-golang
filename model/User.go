@@ -40,3 +40,20 @@ func (user *User) BeforeSave(*gorm.DB) error {
 	user.LastName = html.EscapeString(strings.TrimSpace(user.LastName))
 	return nil
 }
+
+
+func (user *User) ValidatePassword(password string) error {
+	return bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+}
+
+
+// DB functions for User
+
+func FindUserByUsername(username string) (User, error) {
+	var user User
+	err := config.Database.Where("username = ?", username).First(&user).Error
+	if err != nil {
+		return user, err
+	}
+	return user, nil
+}

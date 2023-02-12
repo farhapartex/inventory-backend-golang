@@ -18,11 +18,13 @@ func Register(context *gin.Context){
 		LastName: input.LastName,
 		Username: input.Username,
 		Password: input.Password,
+		IsCustomer: input.IsCustomer,
+		IsSuperAdmin: input.IsSuperAdmin,
 	}
 
 	savedUser, err := user.Save()
 
-	if err != nill{
+	if err != nil{
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

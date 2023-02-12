@@ -2,6 +2,7 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/goupp-backend/controller"
 )
 
 func NewRouter() *gin.Engine {
@@ -21,6 +22,17 @@ func NewRouter() *gin.Engine {
 	{
 		v1 := api.Group("v1")
 		{
+			auth := v1.Group("auth")
+			{
+				auth.POST("/register", controller.Register)
+
+				// auth.GET("/test", func(ctx *gin.Context) {
+				// 	ctx.JSON(200, gin.H{
+				// 		"message": "I'm test healthy",
+				// 	})
+				// })
+			}
+
 			users := v1.Group("users")
 			{
 				users.GET("/", func(ctx *gin.Context) {
