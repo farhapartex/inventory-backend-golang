@@ -3,6 +3,7 @@ package server
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/goupp-backend/controller"
+	"github.com/goupp-backend/middleware"
 )
 
 func NewRouter() *gin.Engine {
@@ -28,20 +29,26 @@ func NewRouter() *gin.Engine {
 				auth.POST("/login", controller.Login)
 			}
 
-			users := v1.Group("users")
+			private := v1.Group("private")
+			private.Use(middleware.JWTAuthMiddleware())
 			{
-				users.GET("/", func(ctx *gin.Context) {
-					ctx.JSON(200, gin.H{
-						"message": "I'm healthy",
+				users := private.Group("users")
+				{
+					users.GET("/", func(ctx *gin.Context) {
+						ctx.JSON(200, gin.H{
+							"message": "I'm healthy",
+						})
 					})
-				})
-
-				users.GET("/test", func(ctx *gin.Context) {
-					ctx.JSON(200, gin.H{
-						"message": "I'm test healthy",
+	
+					users.GET("/test", func(ctx *gin.Context) {
+						ctx.JSON(200, gin.H{
+							"message": "I'm test healthy",
+						})
 					})
-				})
+				}
 			}
+
+			
 		}
 	}
 
